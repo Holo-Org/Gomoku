@@ -16,6 +16,10 @@ Azemoku is a Gomoku AI brain designed for the Epitech G-AIA-500 project. It play
 
 **Features:**
 
+- Minimax algorithm with alpha-beta pruning
+- Heuristic evaluation with pattern recognition
+- Support for variable board sizes (optimized for 20x20)
+- Debug mode for development and analysis
 - Compliant with the standard Gomoku AI protocol
 
 ## Requirements
@@ -66,6 +70,18 @@ The bot communicates via stdin/stdout. For testing, you can run it directly:
 
 ```bash
 ./pbrain-gomoku-ai
+```
+
+With debug output:
+
+```bash
+./pbrain-gomoku-ai --debug
+```
+
+With custom search depth:
+
+```bash
+./pbrain-gomoku-ai --depth 5
 ```
 
 ### With liskvork Game Manager

@@ -4,6 +4,7 @@
 
 ```Raw
 gomoku/
+├── pbrain-gomoku-ai     # Main executable (Python script)
 ├── flake.nix            # Nix flakes configuration
 ├── flake.lock           # Nix lock file (generated)
 ├── ruff.toml            # Ruff linter/formatter configuration
@@ -14,7 +15,23 @@ gomoku/
 ├── scripts/
 │   ├── check-commit-msg.py  # Commit message validator
 │   └── check-no-fixup.sh    # Pre-push hook (rejects fixup!/!)
+└── src/
+    ├── ALGORITHM.md     # AI algorithm documentation
+    ├── __init__.py      # Package initialization
+    ├── main.py          # Entry point, CLI argument parsing
+    ├── board.py         # Board representation, game logic
+    ├── evaluation.py    # Heuristic evaluation, pattern detection
+    ├── ai.py            # Minimax, alpha-beta, move ordering
+    └── protocol.py      # Protocol command handling
 ```
+
+### Module Descriptions
+
+- **board.py**: Defines the `Board` class with stone placement, win detection, and board operations.
+- **evaluation.py**: Pattern recognition and scoring. Analyzes lines for consecutive stones and classifies patterns.
+- **ai.py**: Implements Minimax with alpha-beta pruning. Contains both simple and ordered move generation.
+- **protocol.py**: Parses protocol commands and manages game state. Bridges between manager and AI.
+- **main.py**: Entry point with argument parsing and main loop.
 
 ## Development
 
@@ -109,6 +126,35 @@ AI: add feature                 # Uppercase scope
 - `! WIP message` - Temporary commits (remove before push)
 
 These bypass validation but are rejected by the pre-push hook.
+
+### Testing Manually
+
+```bash
+# Start the bot in debug mode
+./pbrain-gomoku-ai --debug
+
+# Type commands:
+START 20
+BEGIN
+TURN 9,9
+# etc.
+```
+
+### Debug Output
+
+Debug output goes to stderr (won't interfere with protocol):
+
+```bash
+./pbrain-gomoku-ai --debug 2>debug.log
+```
+
+### Enabling Move Ordering
+
+Edit `src/ai.py` and swap the commented function:
+
+1. Comment out the simple `get_candidate_moves` function
+2. Uncomment the ordered version below it
+3. Save and run
 
 ### Brawl Tournament
 
