@@ -601,7 +601,11 @@ class ProtocolHandler:
 
         # For the very first move, use opening strategy
         if self.board.move_count == 0:
-            row, col = get_opening_move(self.board)
+            move = get_opening_move(self.board)
+            if move is None:
+                respond_error("no valid moves")
+                return False
+            row, col = move
         else:
             move = find_best_move(self.board)
             if move is None:

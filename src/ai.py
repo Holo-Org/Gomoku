@@ -105,15 +105,13 @@ def get_candidate_moves_simple(board: Board) -> list[tuple[int, int]]:
     candidates: set[tuple[int, int]] = set()
 
     # Find all cells near existing stones
-    for row in range(board.size):
-        for col in range(board.size):
-            if board.get_cell(row, col) != Cell.EMPTY:
-                # Add all empty cells within radius
-                for dr in range(-CANDIDATE_RADIUS, CANDIDATE_RADIUS + 1):
-                    for dc in range(-CANDIDATE_RADIUS, CANDIDATE_RADIUS + 1):
-                        nr, nc = row + dr, col + dc
-                        if board.is_valid_move(nr, nc):
-                            candidates.add((nr, nc))
+    for row, col, _ in board.get_occupied_cells():
+        # Add all empty cells within radius
+        for dr in range(-CANDIDATE_RADIUS, CANDIDATE_RADIUS + 1):
+            for dc in range(-CANDIDATE_RADIUS, CANDIDATE_RADIUS + 1):
+                nr, nc = row + dr, col + dc
+                if board.is_valid_move(nr, nc):
+                    candidates.add((nr, nc))
 
     return list(candidates)
 
@@ -129,7 +127,7 @@ def get_candidate_moves_simple(board: Board) -> list[tuple[int, int]]:
 # -----------------------------------------------------------------------------
 
 
-def get_candidate_moves(board: Board, player: int) -> list[tuple[int, int]]:
+def get_candidate_moves(board: Board, _player: int) -> list[tuple[int, int]]:
     """
     Get candidate moves without ordering.
 
@@ -411,7 +409,7 @@ def find_best_move(board: Board, depth: int = DEFAULT_DEPTH) -> tuple[int, int] 
     return best_move
 
 
-def get_opening_move(board: Board) -> tuple[int, int]:
+def get_opening_move(board: Board) -> tuple[int, int] | None:
     """
     Get a move for the opening (first few moves).
 
@@ -422,7 +420,7 @@ def get_opening_move(board: Board) -> tuple[int, int]:
         board: The current game board.
 
     Returns:
-        A position for the opening move.
+        A position for the opening move, or None if the board is full.
     """
     center = board.size // 2
 
@@ -438,4 +436,8 @@ def get_opening_move(board: Board) -> tuple[int, int]:
 
     # Fallback to regular search
     move = find_best_move(board)
-    return move if move else (center, center)
+    if move is not None:
+        return move
+    # This should never happen in a real opening, but handle gracefully
+    empty_cells = board.get_empty_cells()
+    return empty_cells[0] if empty_cells else None

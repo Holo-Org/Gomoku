@@ -90,6 +90,7 @@ def main() -> int:
             import traceback
 
             traceback.print_exc(file=sys.stderr)
+            raise  # Re-raise in debug mode for visibility
         return 1
 
     return 0
