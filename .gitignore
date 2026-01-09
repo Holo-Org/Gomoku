@@ -1,0 +1,9 @@
+# nix
+result
+result*
+
+# direnv
+.envrc
+.direnv
+
+*.pre-commit-config.yaml

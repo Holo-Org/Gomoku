@@ -1,0 +1,92 @@
+# Ruff configuration for Gomoku AI
+# https://docs.astral.sh/ruff/configuration/
+
+# Target Python 3.11+
+target-version = "py311"
+
+# Line length (match commit convention and PEP 8)
+line-length = 100
+
+# Exclude common non-source directories
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    "__pycache__",
+    "*.egg-info",
+]
+
+[lint]
+# Enable a comprehensive set of rules
+select = [
+    # Pyflakes - logical errors
+    "F",
+    # pycodestyle - style errors and warnings
+    "E",
+    "W",
+    # isort - import sorting
+    "I",
+    # pep8-naming - naming conventions
+    "N",
+    # pyupgrade - upgrade syntax for newer Python
+    "UP",
+    # flake8-annotations - enforce type annotations
+    "ANN",
+    # flake8-bugbear - common bugs and design issues
+    "B",
+    # flake8-comprehensions - better comprehensions
+    "C4",
+    # flake8-simplify - simplify code
+    "SIM",
+    # flake8-return - return statement issues
+    "RET",
+    # flake8-raise - raise statement issues
+    "RSE",
+    # Ruff-specific rules
+    "RUF",
+]
+
+# Ignore specific rules that are too strict or conflict with project style
+ignore = [
+    # Allow self and cls without type annotations (standard practice)
+    "ANN101",  # Missing type annotation for self
+    "ANN102",  # Missing type annotation for cls
+    # Allow Any type when necessary
+    "ANN401",  # Dynamically typed expressions (Any)
+    # Allow assert statements (useful for debugging)
+    "S101",
+    # Allow print statements (needed for protocol output)
+    "T201",
+]
+
+# Allow autofix for all enabled rules
+fixable = ["ALL"]
+unfixable = []
+
+[lint.per-file-ignores]
+# Allow missing docstrings in test files
+"test_*.py" = ["D100", "D103"]
+# Allow missing annotations in scripts
+"scripts/*.py" = ["ANN"]
+
+[lint.isort]
+# Sort imports in a consistent way
+known-first-party = ["src"]
+force-single-line = false
+combine-as-imports = true
+
+[lint.flake8-annotations]
+# Enforce return type annotations
+mypy-init-return = true
+# Suppress errors for missing annotations on *args and **kwargs
+suppress-none-returning = true
+
+[format]
+# Use double quotes for strings
+quote-style = "double"
+# Use spaces for indentation
+indent-style = "space"
+# Respect magic trailing commas
+skip-magic-trailing-comma = false
+# Unix-style line endings
+line-ending = "lf"
